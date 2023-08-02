@@ -13,13 +13,13 @@ async function generatePitchDeck(responses, pitchDeck, userToken) {
         "slides": pitchDeckSlides
     }
     const pitchDeckJson = JSON.stringify(pitchDeckData)
-    const picthDeckForUpdate = { userId: userId, meta: pitchDeckJson }
+    const picthDeckForUpdate = { ...pitchDeck, meta: pitchDeckJson }
 
     const headers = {
         'authorization': userToken
     };
 
-    axios.put(process.env.PITCH_DECK_UPDATE_URL, { picthDeckForUpdate }, { headers }).then((response)=>{
+    axios.put(process.env.PITCH_DECK_UPDATE_URL, picthDeckForUpdate , { headers }).then((response)=>{
         console.log(response.data)
     }).catch((error)=>{
         console.log(error)
