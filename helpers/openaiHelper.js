@@ -11,6 +11,7 @@ const openai = new OpenAIApi(configuration)
 
 const createCompletion = async (options) => {
     const response = await openai.createCompletion(options)
+    console.log('response received!')
     return response.data.choices[0].text
 }
 

@@ -1,27 +1,27 @@
-const { response } = require('express')
 const { createCompletion, generateImages } = require('./helpers/openaiHelper')
 const axios = require('axios')
 require('dotenv').config()
 
-async function generatePitchDeck(responses, pitchDeck, userToken) {
-    const userId = pitchDeck.userId
+const generatePitchDeck = async (responses, pitchDeck, userToken) => {
     const pitchDeckInformation = await getPitchDeckInformations(responses)
     const pitchDeckSlides = await generatePitchDeckSlides(pitchDeckInformation, responses)
-    const pitchDeckData = {
-        "user-id": `${userId}`,
+    console.log(pitchDeckSlides, 'pitchDeckSlides')
+    const pitchDeckMeta = {
+        "user-id": `${pitchDeck.userId}`,
         "template": "pitch-deck",
         "slides": pitchDeckSlides
     }
-    const pitchDeckJson = JSON.stringify(pitchDeckData)
-    const picthDeckForUpdate = { ...pitchDeck, meta: pitchDeckJson }
-
+    const pitchDeckJson = JSON.stringify(pitchDeckMeta)
+    pitchDeck.meta = pitchDeckJson
+    console.log(pitchDeck)
+    
     const headers = {
         'authorization': userToken
     };
 
-    axios.put(process.env.PITCH_DECK_UPDATE_URL, picthDeckForUpdate , { headers }).then((response)=>{
+    axios.put(process.env.PITCH_DECK_UPDATE_URL, pitchDeck, { headers }).then((response) => {
         console.log(response.data)
-    }).catch((error)=>{
+    }).catch((error) => {
         console.log(error)
     })
 }
@@ -340,6 +340,7 @@ const generatePitchDeckSlides = async (answers, responses) => {
             "product-finalized-date": responses.timePlanDetails.productFinalizedDate
         }
     })
+    return pitchDeckSlides
 }
 
 module.exports.generatePitchDeck = generatePitchDeck
