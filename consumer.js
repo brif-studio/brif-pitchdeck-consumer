@@ -11,9 +11,7 @@ const publisher = async () => {
             durable: false
         })
 
-        await channel.assertQueue(process.env.QUEUE_NAME, {
-            exclusive: true
-        })
+        await channel.assertQueue(process.env.QUEUE_NAME)
         channel.bindQueue(process.env.QUEUE_NAME, exchange.exchange, 'sys.#')
         channel.consume(process.env.QUEUE_NAME, async message => {
                 console.log(message.fields.routingKey)
