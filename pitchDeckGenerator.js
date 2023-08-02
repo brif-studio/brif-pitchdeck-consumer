@@ -7,20 +7,20 @@ async function generatePitchDeck(responses, pitchDeck, userToken) {
     const userId = pitchDeck.userId
     const pitchDeckInformation = await getPitchDeckInformations(responses)
     const pitchDeckSlides = await generatePitchDeckSlides(pitchDeckInformation, responses)
-    const pitchDeckForUpdate = {
+    const pitchDeck = {
         "user-id": `${userId}`,
         "template": "pitch-deck",
         "slides": pitchDeckSlides
     }
-    const pitchDeckJson = JSON.stringify(pitchDeckForUpdate)
+    const pitchDeckJson = JSON.stringify(pitchDeck)
     const picthDeckForUpdate = { userId: userId, meta: pitchDeckJson }
 
     const headers = {
         'authorization': userToken
     };
 
-    axios.put(process.env.PITCH_DECK_UPDATE_URL, { picthDeckForUpdate }, { headers }).then((repsonse)=>{
-        console.log(response)
+    axios.put(process.env.PITCH_DECK_UPDATE_URL, { picthDeckForUpdate }, { headers }).then((response)=>{
+        console.log(response.data)
     }).catch((error)=>{
         console.log(error)
     })
