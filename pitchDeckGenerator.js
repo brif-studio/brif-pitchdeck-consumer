@@ -1,3 +1,4 @@
+const { response } = require('express')
 const { createCompletion, generateImages } = require('./helpers/openaiHelper')
 const axios = require('axios')
 require('dotenv').config()
@@ -18,7 +19,11 @@ async function generatePitchDeck(responses, pitchDeck, userToken) {
         'authorization': userToken
     };
 
-    axios.put(process.env.PITCH_DECK_UPDATE_URL, { picthDeckForUpdate }, { headers })
+    axios.put(process.env.PITCH_DECK_UPDATE_URL, { picthDeckForUpdate }, { headers }).then((repsonse)=>{
+        console.log(response)
+    }).catch((error)=>{
+        console.log(error)
+    })
 }
 
 const getPitchDeckInformations = async (responses) => {
