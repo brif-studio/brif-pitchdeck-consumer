@@ -1,5 +1,6 @@
 const amqplib = require('amqplib')
 const { generatePitchDeck } = require('./pitchDeckGenerator')
+const io = require('./socket')
 require('dotenv').config()
 
 const publisher = async () => {
@@ -19,6 +20,7 @@ const publisher = async () => {
                 console.log(JSON.parse(message.content.toString()))
                 const { responses, pitchDeck, userToken } = JSON.parse(message.content.toString())
                 await generatePitchDeck(responses, pitchDeck, userToken)
+                io.socket.emit('pitchDeck updated!')
                 channel.ack(message)
         })
     } catch (error) {
