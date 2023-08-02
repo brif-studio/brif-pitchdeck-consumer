@@ -7,12 +7,12 @@ async function generatePitchDeck(responses, pitchDeck, userToken) {
     const userId = pitchDeck.userId
     const pitchDeckInformation = await getPitchDeckInformations(responses)
     const pitchDeckSlides = await generatePitchDeckSlides(pitchDeckInformation, responses)
-    const pitchDeck = {
+    const pitchDeckData = {
         "user-id": `${userId}`,
         "template": "pitch-deck",
         "slides": pitchDeckSlides
     }
-    const pitchDeckJson = JSON.stringify(pitchDeck)
+    const pitchDeckJson = JSON.stringify(pitchDeckData)
     const picthDeckForUpdate = { userId: userId, meta: pitchDeckJson }
 
     const headers = {
