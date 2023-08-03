@@ -13,6 +13,7 @@ const generatePitchDeck = async (responses, pitchDeck, userToken) => {
     }
     const pitchDeckJson = JSON.stringify(pitchDeckMeta)
     pitchDeck.meta = pitchDeckJson
+    pitchDeck.isCreated = true
     console.log(pitchDeck)
     
     const headers = {
