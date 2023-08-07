@@ -1,9 +1,8 @@
 const amqplib = require('amqplib')
 const { generatePitchDeck } = require('./pitchDeckGenerator')
-const io = require('./socket')
 require('dotenv').config()
 
-const publisher = async () => {
+const publisher = async (io) => {
     try {
         let connection = await amqplib.connect({
             protocol: 'amqp',
