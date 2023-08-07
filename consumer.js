@@ -34,4 +34,4 @@ const publisher = async () => {
     }
 }
 
-publisher()
+module.exports = publisher

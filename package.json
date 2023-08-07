@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node consumer.js",
-    "dev": "nodemon consumer.js",
+    "start": "node socket.js",
+    "dev": "nodemon socket.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
