@@ -5,7 +5,15 @@ require('dotenv').config()
 
 const publisher = async () => {
     try {
-        const connection = await amqplib.connect(process.env.RABBITMQ_CONNECTION_URL)
+        const connection = await amqplib.connect({
+            protocol: 'amqp',
+            hostname: process.env.RABBITMQ_HOST,
+            port: process.env.RABBITMQ_PORT,
+            username: process.env.RABBITMQ_USERNAME,
+            password: process.env.RABBITMQ_PASSWORD,
+            vhost: process.env.RABBITMQ_USERNAME,
+            heartbeat: 10
+        })
         const channel = await connection.createChannel()
         const exchange = await channel.assertExchange(process.env.EXCHANGE_NAME, 'topic', {
             durable: false
