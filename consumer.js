@@ -64,7 +64,7 @@ const publisher = async (socket) => {
         })
 
         await channel.assertQueue(process.env.QUEUE_NAME)
-        channel.bindQueue(process.env.QUEUE_NAME, exchange.exchange, 'sys.#')
+        channel.bindQueue(process.env.QUEUE_NAME, exchange.exchange, 'sys.pitchdeck')
         channel.consume(process.env.QUEUE_NAME, async message => {
                 console.log(message.fields.routingKey)
                 console.log(JSON.parse(message.content.toString()))
