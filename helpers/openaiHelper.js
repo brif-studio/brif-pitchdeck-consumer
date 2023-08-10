@@ -1,6 +1,6 @@
 const { Configuration, OpenAIApi } = require("openai")
 require('dotenv').config()
-const { storage } = require('../../config/firebase')
+const { storage } = require('../config/firebase')
 const { ref, uploadBytes, getDownloadURL } = require("firebase/storage");
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
