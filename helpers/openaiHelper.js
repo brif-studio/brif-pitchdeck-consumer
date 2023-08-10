@@ -1,6 +1,6 @@
 const { Configuration, OpenAIApi } = require("openai")
 require('dotenv').config()
-const { storage } = require('../config/firebase')
+const { storage } = require('../../config/firebase')
 const { ref, uploadBytes, getDownloadURL } = require("firebase/storage");
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -9,10 +9,9 @@ const axios = require('axios')
 
 const openai = new OpenAIApi(configuration)
 
-const createCompletion = async (options) => {
-    const response = await openai.createCompletion(options)
-    console.log('response received!')
-    return response.data.choices[0].text
+const createChatCompletion = async (options) => {
+  const response = await openai.createChatCompletion(options)
+  return response.data.choices[0].message.content
 }
 
 const generateImages = async (options) => {
@@ -26,5 +25,4 @@ const generateImages = async (options) => {
   return await getDownloadURL(storageRef)
 }
 
-module.exports = { createCompletion, generateImages, openai }
-
+module.exports = { createChatCompletion, generateImages, openai }
