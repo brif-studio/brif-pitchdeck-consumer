@@ -4,28 +4,40 @@ const chatMessages = require('./consts/chatMessages.json')
 require('dotenv').config()
 
 const generatePitchDeck = async (responses, pitchDeck, userToken) => {
-    const pitchDeckInformations = await getPitchDeckInformations(responses);
-    const pitchDeckSlides = await generatePitchDeckSlides(pitchDeckInformations.picthDeck, pitchDeckInformations.images, responses);
-    console.log(pitchDeckSlides, 'pitchDeckSlides')
-    const pitchDeckMeta = {
-        "user-id": `${pitchDeck.userId}`,
-        "template": "pitch-deck",
-        "slides": pitchDeckSlides
-    }
-    const pitchDeckJson = JSON.stringify(pitchDeckMeta)
-    pitchDeck.meta = pitchDeckJson
-    pitchDeck.isCreated = true
-    console.log(pitchDeck)
-
     const headers = {
         'authorization': userToken
     };
 
-    axios.put(process.env.PITCH_DECK_UPDATE_URL, pitchDeck, { headers }).then((response) => {
-        console.log(response.data)
-    }).catch((error) => {
-        console.log(error)
-    })
+    try {
+        const pitchDeckInformations = await getPitchDeckInformations(responses);
+        const pitchDeckSlides = await generatePitchDeckSlides(pitchDeckInformations.picthDeck, pitchDeckInformations.images, responses);
+        console.log(pitchDeckSlides, 'pitchDeckSlides')
+        const pitchDeckMeta = {
+            "user-id": `${pitchDeck.userId}`,
+            "template": "pitch-deck",
+            "slides": pitchDeckSlides
+        }
+        const pitchDeckJson = JSON.stringify(pitchDeckMeta)
+        pitchDeck.meta = pitchDeckJson
+        pitchDeck.isCreated = true
+        console.log(pitchDeck)
+
+        await axios.put(process.env.PITCH_DECK_UPDATE_URL, pitchDeck, { headers }).then((response)=>{
+            console.log('PitchDeck generated successfully!')
+            console.log(response.data)
+        }).catch((error)=>{
+            console.log(error)
+        });
+        console.log("Pitch deck update successful");
+    } catch (error) {
+        console.error("Error generating pitch deck:", error);
+        await axios.delete(process.env.PITCH_DECK_DELETE_URL, { headers: headers, data: { pitchDeckId: pitchDeck.id } }).then((response)=>{
+            console.log("Pitch deck deleted!")
+            console.log(response.data)
+        }).catch((error)=>{
+            console.log(error)
+        });      
+    }
 }
 
 const getPitchDeckInformations = async (responses) => {
