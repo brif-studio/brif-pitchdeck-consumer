@@ -42,7 +42,7 @@ const generatePitchDeck = async (responses, pitchDeck, userToken) => {
 
 const getPitchDeckInformations = async (responses) => {
 
-    const companyAnalyzerMessages = chatMessages.companyAnalyzerMessages
+    let companyAnalyzerMessages = [...chatMessages.companyAnalyzerMessages]
     companyAnalyzerMessages.push({
         "role": "user",
         "content": `${responses.firstQuestion}, ${responses.secondQuestion}, ${responses.thirdQuestion}, ${responses.fourthQuestion}, ${responses.fifthQuestion}, ${responses.sixthQuestion}, ${responses.seventhQuestion}`
@@ -57,7 +57,7 @@ const getPitchDeckInformations = async (responses) => {
         presence_penalty: 0,
     });
 
-    let pitchDeckFinalMessages = chatMessages.pitchDeckFinalMessages
+    let pitchDeckFinalMessages = [...chatMessages.pitchDeckFinalMessages]
     pitchDeckFinalMessages.push({
         "role": "user",
         "content": `${responses.firstQuestion}, ${responses.secondQuestion}, ${responses.thirdQuestion}, ${responses.fourthQuestion}, ${responses.fifthQuestion}, ${responses.sixthQuestion}, ${responses.seventhQuestion}; ${companyAnalyzer}`
@@ -76,7 +76,7 @@ const getPitchDeckInformations = async (responses) => {
     console.log(pitchDeckFinal, 'pitchDeckFinal')
     const finalResponses = JSON.parse(pitchDeckFinal)
 
-    let dallePromterMessages = chatMessages.dallePromterMessages
+    let dallePromterMessages = [...chatMessages.dallePromterMessages]
     dallePromterMessages.push({
         "role": "user",
         "content": `${companyAnalyzer}, ${finalResponses[0].image}, ${finalResponses[1].image}, ${finalResponses[2].image}, ${finalResponses[3].image}, ${finalResponses[4].image}, ${finalResponses[5].image}, ${finalResponses[6].image}`
